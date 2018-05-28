@@ -17,16 +17,13 @@ userController.addUser = async (req, res) => {
   try {
     const savedUser = await userModel.create(user);
     if (savedUser) {
-      res.set('Authorization', `Bearer ${token}`);
-      res.send(savedUser);
+      res.set('Authorization', `Bearer ${token}`).send(savedUser);
     } else {
-      res.status(500);
-      res.send('Something goes wrong saving a user');
+      res.status(500).send('Something goes wrong saving a user');
     }
   } catch (err) {
     logger.error(`Error creating a user: ${err}`);
-    res.status(500);
-    res.send(`Error creating a user: ${err}`);
+    res.status(500).send(`Error creating a user: ${err}`);
   }
 };
 
@@ -40,17 +37,13 @@ userController.signin = async (req, res) => {
         expDate: new Date(new Date().getTime() + TOKEN_LIVE_TIME),
       });
       await userModel.update(user._id, user);
-      res.set('Authorization', `Bearer ${newToken}`);
-      // res.send('Successfully signed in');
-      res.send(user);
+      res.set('Authorization', `Bearer ${newToken}`).send(user);
     } else {
-      res.status(400);
-      res.send('No such a user, please verify userId and password');
+      res.status(400).send('No such a user, please verify userId and password');
     }
   } catch (err) {
     logger.error(`Error on getting a user: ${err}`);
-    res.status(500);
-    res.send(`Error on getting a user: ${err}`);
+    res.status(500).send(`Error on getting a user: ${err}`);
   }
 };
 
@@ -58,12 +51,10 @@ userController.getUserByToken = async (req, res) => {
   const token = req.token;
   try {
     const user = await userModel.getByToken(token);
-    res.set('Authorization', `Bearer ${token}`);
-    res.send({ uerId: user.userId, type: user.type });
+    res.set('Authorization', `Bearer ${token}`).send({ uerId: user.userId, type: user.type });
   } catch (err) {
     logger.error(`Error on getting a user: ${err}`);
-    res.status(500);
-    res.send(`Error on getting a user: ${err}`);
+    res.status(500).send(`Error on getting a user: ${err}`);
   }
 };
 
@@ -81,13 +72,11 @@ userController.checkToken = async (req, res, next) => {
       res.set('Authorization', `Bearer ${token}`);
       next();
     } else {
-      res.status(401);
-      res.send('Token is wrong or expired, please signin');
+      res.status(401).send('Token is wrong or expired, please signin');
     }
   } catch (err) {
     logger.error(`Error on checking token: ${err}`);
-    res.status(500);
-    res.send(`Error on checking token: ${err}`);
+    res.status(500).send(`Error on checking token: ${err}`);
   }
 };
 
@@ -102,13 +91,11 @@ userController.logout = async (req, res) => {
       await userModel.update(user._id, user);
       res.send('Successfully logged out');
     } else {
-      res.status(401);
-      res.send('Token is wrong or expired, please signin');
+      res.status(401).send('Token is wrong or expired, please signin');
     }
   } catch (err) {
     logger.error(`Error on logout: ${err}`);
-    res.status(500);
-    res.send(`Error on logout: ${err}`);
+    res.status(500).send(`Error on logout: ${err}`);
   }
 };
 

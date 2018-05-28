@@ -48,5 +48,5 @@ app.get('/', (req, res) => {
 });
 
 app.listen(port, () => {
-  logger.info('server started - ', port);
+  logger.info(`Server started on port ${port}`);
 });
