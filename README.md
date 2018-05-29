@@ -1,7 +1,9 @@
 # Bearer-token based authorization API
 
 + docker
-+ express
++ node.js
++ express.js
++ mongoDB
 + mongoose
 
 ## Installation
